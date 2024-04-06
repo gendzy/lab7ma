@@ -11,8 +11,8 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.rememberCoroutineScope
 import com.topic2.android.notes.routing.Screen
 import com.topic2.android.notes.theme.NotesTheme
+import com.topic2.android.notes.ui.components.Note
 import com.topic2.android.notes.uicomponents.AppDrawer
-import com.topic2.android.notes.uicomponents.Note
 import com.topic2.android.notes.viewmodel.MainViewModel
 import com.topic2.android.notes.viewmodel.MainViewModelFactory
 import kotlinx.coroutines.launch
