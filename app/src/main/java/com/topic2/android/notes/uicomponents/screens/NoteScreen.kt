@@ -1,7 +1,9 @@
 package com.topic2.android.notes.uicomponents.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
@@ -13,6 +15,7 @@ import com.topic2.android.notes.ui.components.Note
 import com.topic2.android.notes.uicomponents.TopAppBar
 import com.topic2.android.notes.viewmodel.MainViewModel
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NotesScreen(viewModel: MainViewModel) {
 
@@ -20,24 +23,32 @@ fun NotesScreen(viewModel: MainViewModel) {
         .notesNotInTrash
         .observeAsState(listOf())
 
-    Column {
+    Scaffold(topBar = {
         TopAppBar(
-            title = "Заметки",
-            icon = Icons.Filled.List,
-            onIconClick = {}
+            title = "Notes",
+            icon = Icons.Filled.List, onIconClick = {}
         )
+    },
+        content = {
+            if(notes.isNotEmpty()) {
         NotesList(
             notes = notes,
-            onNoteCheckedChange = { viewModel.onNoteCheckedChange(it) },
-            onNoteClick = { viewModel.onNoteClick(it) }
+            onNoteCheckedChange = {
+                viewModel.onNoteCheckedChange(it) },
+            onNoteClick = { viewModel.onNoteClick(it) },
+            isSelected = true
         )
-    }
+            }
+        }
+    )
 }
+
 @Composable
 private fun NotesList(
     notes: List<NoteModel>,
     onNoteCheckedChange: (NoteModel) -> Unit,
-    onNoteClick: (NoteModel) -> Unit
+    onNoteClick: (NoteModel) -> Unit,
+    isSelected: Boolean
 ) {
     LazyColumn {
         items(count = notes.size) { noteIndex ->
@@ -45,11 +56,13 @@ private fun NotesList(
             Note(
                 note = note,
                 onNoteClick = onNoteClick,
-                onNoteCheckedChange = onNoteCheckedChange
+                onNoteCheckedChange = onNoteCheckedChange,
+                isSelected = isSelected
             )
         }
     }
 }
+
 
 @Preview
 @Composable
@@ -61,6 +74,7 @@ private fun NotesListPreview() {
             NoteModel(3, "Note 3", "Content 3", true)
         ),
         onNoteCheckedChange = {},
-        onNoteClick = {}
+        onNoteClick = {},
+        isSelected = true
     )
 }

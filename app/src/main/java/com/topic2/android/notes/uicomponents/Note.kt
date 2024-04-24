@@ -29,7 +29,8 @@ import com.topic2.android.notes.util.fromHex
 fun Note(
     note: NoteModel,
     onNoteClick: (NoteModel) -> Unit = {},
-    onNoteCheckedChange: (NoteModel) -> Unit = {}
+    onNoteCheckedChange: (NoteModel) -> Unit = {},
+    isSelected: Boolean
 ) {
     val backgroundShape: Shape = RoundedCornerShape(4.dp)
     Row(
@@ -90,15 +91,16 @@ fun Note(
         }
     }
 }
-    @Preview
-    @Composable
-    private fun NotePreview() {
+@Preview
+@Composable
+private fun NotePreview() {
 
-        Note(
-            note = NoteModel(
-                1,
-                "Заметки 1",
-                "Содержимое 1",
-                null)
-        )
-    }
+    Note(
+        isSelected = true,
+        note = NoteModel(
+            1,
+            "Заметки 1",
+            "Содержимое 1",
+            null)
+    )
+}
