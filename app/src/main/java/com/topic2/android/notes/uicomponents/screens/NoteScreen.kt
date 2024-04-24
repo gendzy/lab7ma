@@ -4,16 +4,24 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import com.topic2.android.notes.domain.model.NoteModel
+import com.topic2.android.notes.routing.Screen
 import com.topic2.android.notes.ui.components.Note
+import com.topic2.android.notes.uicomponents.AppDrawer
 import com.topic2.android.notes.uicomponents.TopAppBar
 import com.topic2.android.notes.viewmodel.MainViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -23,12 +31,33 @@ fun NotesScreen(viewModel: MainViewModel) {
         .notesNotInTrash
         .observeAsState(listOf())
 
+    val scope: CoroutineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+
+
+
     Scaffold(topBar = {
         TopAppBar(
             title = "Notes",
-            icon = Icons.Filled.List, onIconClick = {}
+            icon = Icons.Filled.List,
+            onIconClick = {
+               scope.launch {
+                 scaffoldState.drawerState.open()
+                }
+            }
         )
     },
+        scaffoldState = scaffoldState,
+        drawerContent = {
+            AppDrawer(
+                currentScreen = Screen.Notes, closeDrawerAction = {
+                    scope.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                }
+            )
+        },
         content = {
             if(notes.isNotEmpty()) {
         NotesList(
