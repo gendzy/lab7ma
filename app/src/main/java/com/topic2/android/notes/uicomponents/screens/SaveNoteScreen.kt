@@ -422,4 +422,4 @@ fun NoteCheckOptionPreview() {
 @Composable
 fun PickedColorPreview() {
     PickedColor(ColorModel.DEFAULT)
-} //
+}
